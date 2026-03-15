@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Especial para Ti</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+    --primario: #ffffff;
+    --fondo: #FDF2F8;
+
+    /* COLOR DEL SOBRE */
+    --fondo-sobre: #0F172B;
+    --solapa-sobre: #0F172B;
+    --cuerpo-sobre: #020618;
+;
+
+    --sombra: rgba(0, 0, 0, 0.25);
+
+    --texto: #020618;
+    --dorado: #020618;
+    --rojo: #8A0194;
+}
+
+
+
+        body {
+            background: var(--fondo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: "Pacifico", cursive;
+            font-size: 44px;
+            margin-bottom: 30px;
+            color: #020618;
+        }
+
+        .contenedor {
+            width: 400px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .envoltura-sobre {
+            position: relative;
+            background-color: var(--fondo-sobre);
+            box-shadow: 0 15px 40px var(--sombra);
+            border-radius: 12px;
+        }
+
+        .sobre {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            cursor: pointer;
+        }
+
+        .sobre::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 4;
+            border-top: 180px solid var(--solapa-sobre);
+            border-right: 200px solid transparent;
+            border-left: 200px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out 0.7s;
+            border-radius: 12px;
+        }
+
+        .solapa-derecha,
+        .solapa-izquierda {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--cuerpo-sobre);
+            border-radius: 12px;
+        }
+
+        .solapa-derecha {
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+        }
+
+        .solapa-izquierda {
+            clip-path: polygon(0 0, 0 100%, 100% 100%);
+        }
+
+        .carta {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primario);
+            box-shadow: 0 10px 30px var(--sombra);
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .contenido {
+            font-family: "Georgia", serif;
+            color: var(--texto);
+            text-align: left;
+            font-size: 16px;
+            border: 2px dashed var(--dorado);
+            padding: 15px;
+            height: 100%;
+            line-height: 1.6;
+            overflow-y: auto;
+            background: #fffdf7;
+        }
+
+        .contenido strong {
+            color: var(--rojo);
+        }
+
+        .spider-sello {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 45px;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            cursor: pointer;
+            transition: transform 0.5s ease-in-out 1s;
+        }
+
+        .abierto .sobre::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .abierto .spider-sello {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+
+        .carta.mostrar-carta {
+            transform: translateY(-290px);
+        }
+
+        .carta.cerrando-carta {
+            transform: translateY(-290px);
+        }
+
+        .carta.abierta {
+            z-index: 10000;
+        }
+
+        .envoltura-sobre.desactivar-sobre .sobre::before {
+            pointer-events: none;
+        }
+
+      .rosa {
+    position: fixed;
+    bottom: -60px;
+    font-size: 26px;
+    opacity: 0.85;
+    animation: flotar linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+
+@keyframes flotar {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-120vh);
+    }
+}
+
+
+
+        /* 📱 RESPONSIVE PARA CELULARES */
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+        height: auto;
+    }
+
+    h1 {
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .contenedor {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .sobre {
+        width: 320px;
+        height: 240px;
+    }
+
+    .envoltura-sobre {
+        border-radius: 10px;
+    }
+
+    .sobre::before {
+        border-top: 140px solid var(--solapa-sobre);
+        border-right: 160px solid transparent;
+        border-left: 160px solid transparent;
+    }
+
+    .carta {
+        padding: 12px;
+    }
+
+    .contenido {
+        font-size: 14px;
+        padding: 12px;
+        line-height: 1.5;
+    }
+
+    .spider-sello {
+        width: 35px;
+    }
+
+    /* Ajuste de subida de carta */
+    .carta.mostrar-carta,
+    .carta.cerrando-carta {
+        transform: translateY(-230px);
+    }
+}
+/* 📱 RESPONSIVE PARA CELULARES */
+@media (max-width: 480px) {
+
+    body {
+        padding: 10px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .contenedor {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .sobre {
+        width: 320px;
+        height: 240px;
+    }
+
+    .sobre::before {
+        border-top: 140px solid var(--solapa-sobre);
+        border-right: 160px solid transparent;
+        border-left: 160px solid transparent;
+    }
+
+    .carta {
+        padding: 12px;
+    }
+
+    .contenido {
+        font-size: 14px;
+        padding: 12px;
+        line-height: 1.5;
+    }
+
+    .spider-sello {
+        width: 35px;
+    }
+
+    .carta.mostrar-carta,
+    .carta.cerrando-carta {
+        transform: translateY(-230px);
+    }
+}
+
+.titulo-amor{
+    text-align: center;
+    font-size: 26px;
+    font-family: "Playfair Display", Georgia, serif;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    color: #4D0218;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.imagen-final {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.imagen-final img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.titulo-feliz {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-size: 30px;
+    letter-spacing: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-style: italic; /* cursiva */
+}
+
+.rosa {
+    position: fixed;
+    bottom: -60px;
+
+    width: 35px;   /* tamaño de la rosa */
+    height: auto;
+
+    opacity: 0.85;
+    animation: flotar linear infinite;
+    pointer-events: none;
+    z-index: 1;
+
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+/* movimiento suave */
+@keyframes flotar-titulo {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+}
+
+
+/* colores RGB */
+@keyframes rgbTitulo {
+    0%   { color: rgb(255, 80, 80); }
+    33%  { color: rgb(80, 255, 180); }
+    66%  { color: rgb(80, 150, 255); }
+    100% { color: rgb(255, 80, 80); }
+}
+
+
+    </style>
+</head>
+
+<body>
+
+<h1 class="titulo-globos titulo-feliz">
+    "Donde lo gris se volvió color"
+</h1>
+
+
+
+
+
+<div class="contenedor">
+    <div class="envoltura-sobre">
+        <div class="sobre">
+            <div class="solapa-derecha"></div>
+            <div class="solapa-izquierda"></div>
+            <img src="123445.png" class="spider-sello">
+        </div>
+
+        <div class="carta">
+            <div class="contenido">
+                <h2 class="titulo-amor">Para mi primer amor</h2>
+    <p>
+
+Hace mucho tiempo, mi mundo era <em>gris</em>, sin brillo ni sentido.<br>
+Los días pasaban iguales, uno tras otro, como agua que corre sin detenerse,<br>
+y yo caminaba sin notar los <em>colores</em>, sin sentir que la vida podía <em>sorprender</em>.<br><br>
+
+Pero entonces apareciste <em>tú</em>, y todo cambió de repente.<br>
+Desde aquel día en que una simple <em>coincidencia</em> nos unió<br>
+como algo más que dos personas,<br>
+fue como si el <em>sol</em> hubiera salido después de una larga noche.<br>
+Lo gris se llenó de <em>luz</em>, los sonidos simples se volvieron <em>música</em><br>
+y cada instante, por pequeño que fuera,<br>
+se convirtió en un <em>regalo</em> que no sabía que estaba esperando.<br><br>
+
+Nunca entendí lo que era <em>amar</em> y querer a una persona<br>
+con tanto <em>aprecio</em> y <em>sinceridad</em><br>
+hasta que llegaste a mi vida.<br>
+Llegaste sin prisas, sin destiempos,<br>
+solo con la oportunidad de <em>disfrutarnos</em> en cada momento.<br><br>
+
+Eres dueña de mis <em>pensamientos</em> más secretos;<br>
+guardas mi <em>alegría</em> y mis <em>sueños</em> en tu mirada.<br>
+Antes, mis pensamientos, mis malas ideas<br>
+y el peso que cargaba cada día eran parte de mi rutina.<br>
+Pero hoy, con toda sinceridad,<br>
+puedo admitir que mis días <em>cambiaron</em>.<br>
+El simple hecho de saber que podré <em>verte</em><br>
+hace que mi corazón se acelere,<br>
+y cada latido me recuerda<br>
+que la vida puede ser <em>extraordinaria</em><br>
+cuando alguien toca nuestro mundo con su <em>amor</em>.<br><br>
+
+Sé que amar es un <em>riesgo</em>, lo sé bien.<br>
+Amar a veces <em>duele</em>, nos expone,<br>
+nos hace <em>frágiles</em> y nos recuerda<br>
+que nada es completamente seguro.<br>
+Pero también es la <em>fuerza más grande</em> que existe:<br>
+arriesgarse por sentir algo <em>verdadero</em>,<br>
+arriesgarse por ver <em>colores</em><br>
+donde antes solo había gris.<br><br>
+
+Y también lo sé porque, en ocasiones,<br>
+he cometido <em>errores</em> que han provocado momentos difíciles entre nosotros.<br>
+No soy perfecto,<br>
+pero cada uno de esos errores me ha enseñado<br>
+cuánto <em>valoro</em> lo que tenemos<br>
+y cuánto deseo <em>cuidarlo</em>.<br><br>
+
+El amor da vueltas y vueltas,<br>
+como una <em>rueda</em> que nunca se detiene.<br>
+A veces nos eleva a la <em>felicidad</em> más pura<br>
+y otras nos enfrenta al <em>miedo</em> o al <em>dolor</em>.<br>
+Pero aun así, seguir amando<br>
+es elegir la <em>vida</em>,<br>
+seguir adelante<br>
+aunque no sepamos qué traerá el <em>mañana</em>.<br><br>
+
+Y pensar que ya ha pasado casi un <em>año</em><br>
+desde que nuestros caminos comenzaron a cruzarse,<br>
+desde aquellas primeras <em>coincidencias</em><br>
+que poco a poco nos fueron acercando.<br>
+Un año de <em>miradas</em>, momentos y recuerdos<br>
+que fueron construyendo algo<br>
+que ninguno de los dos imaginaba al inicio.<br><br>
+
+Hoy, <br>
+cumplimos <em>dos meses de novios</em>.<br>
+Puede parecer poco tiempo para el mundo,<br>
+pero para mí han sido dos meses<br>
+llenos de <em>vida</em>, de <em>aprendizajes</em><br>
+y de emociones que no cambiaría por nada.<br><br>
+
+Y sobre todo,<br>
+quiero <em>agradecerte sinceramente</em><br>
+por llegar a mi vida,<br>
+por tu <em>paciencia</em>,<br>
+por los momentos que hemos compartido<br>
+y por permitirme ser parte de tu <em>historia</em>.<br><br>
+
+De lo cotidiano a lo extraordinario<br>
+hay un solo camino:<br>
+abrir el <em>corazón</em>,<br>
+dejar que alguien entre<br>
+y transforme cada momento,<br>
+hacer que los días simples<br>
+se vuelvan <em>memorables</em><br>
+y que la rutina se convierta en <em>maravilla</em>.<br><br>
+
+Y aunque amar traiga <em>miedo</em>, <em>tristeza</em> o <em>desvelo</em>,<br>
+prefiero sentir cada <em>latido</em> contigo<br>
+que vivir en un mundo gris,<br>
+sin ti, sin <em>colores</em>, sin <em>risas</em>, sin <em>milagros</em>.<br><br>
+
+Porque tú has hecho<br>
+que lo común se vuelva <em>mágico</em><br>
+y lo ordinario, <em>extraordinario</em>.<br>
+Y en ese milagro<br>
+he aprendido que la vida más hermosa<br>
+es la que se atreve a <em>amar</em> sin miedo... <br> <br>
+
+<strong>Att: Tu amor ....</strong>
+
+</p>
+</div>
+
+
+
+                   
+        </div>
+    </div>
+</div>
+
+
+<audio id="musica" loop>
+    <source src="pieano.mp3" type="audio/mpeg">
+    
+</audio>
+
+<script>
+    const envoltura = document.querySelector(".envoltura-sobre");
+    const carta = document.querySelector(".carta");
+    const musica = document.getElementById("musica");
+
+    let abierto = false;
+
+    document.addEventListener("click", (e) => {
+
+       /* ABRIR SOBRE */
+if (
+    !abierto &&
+    (
+        e.target.matches(".sobre") ||
+        e.target.matches(".solapa-derecha") ||
+        e.target.matches(".solapa-izquierda") ||
+        e.target.matches(".spider-sello")
+    )
+) {
+
+    /* música después de 5 segundos */
+    setTimeout(() => {
+        musica.play().catch(() => {});
+    }, 3000);
+
+    envoltura.classList.add("abierto");
+    envoltura.classList.add("desactivar-sobre");
+
+    setTimeout(() => {
+        carta.style.display = "block";
+        carta.classList.add("mostrar-carta");
+
+        setTimeout(() => {
+            carta.classList.remove("mostrar-carta");
+            carta.classList.add("abierta");
+            abierto = true;
+        }, 500);
+    }, 1000);
+}
+
+        /* CERRAR CARTA Y SOBRE */
+        else if (abierto) {
+            carta.classList.add("cerrando-carta");
+
+            setTimeout(() => {
+                carta.classList.remove("cerrando-carta");
+                carta.classList.remove("abierta");
+                carta.style.display = "none";
+
+                envoltura.classList.remove("abierto");
+                envoltura.classList.remove("desactivar-sobre");
+
+                abierto = false;
+            }, 500);
+        }
+    });
+
+    /* 🎈 GLOBOS 🎈 */
+function crearRosa() {
+    const rosa = document.createElement("img");
+    rosa.className = "rosa";
+    rosa.src = "rosa_pequena.png";
+
+    rosa.style.left = Math.random() * 100 + "vw";
+    rosa.style.animationDuration = (Math.random() * 5 + 8) + "s";
+
+    document.body.appendChild(rosa);
+
+    setTimeout(() => rosa.remove(), 22000);
+}
+
+setInterval(crearRosa, 900);
+</script>
+
+
+
+
+
+</body>
+</html>
